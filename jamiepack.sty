@@ -1,0 +1,698 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jamiepack}[2025/12/18]
+
+\newcommand{\loadfont}{\RequirePackage{newtxtext,newtxmath}}
+\newcommand{\setmathstyle}{}
+\newcommand{\claimsunder}{section}
+\newcommand{\pagemargin}{2.5cm}
+\DeclareOption{lmodern}{\renewcommand{\loadfont}{\RequirePackage{lmodern}}}
+\DeclareOption{times}{\renewcommand{\loadfont}{\RequirePackage{newtxtext,newtxmath}}}
+\DeclareOption{stix}{\renewcommand{\loadfont}{\RequirePackage{stix2}}}
+\DeclareOption{displaymath}{\renewcommand{\setmathstyle}{\everymath{\displaystyle}}}
+\DeclareOption{claims-under-subsection}{\renewcommand{\claimsunder}{subsection}}
+\DeclareOption{claims-under-subsubsection}{\renewcommand{\claimsunder}{subsubsection}}
+\DeclareOption{narrow-margins}{\renewcommand{\pagemargin}{1.5cm}}
+\DeclareOption{normal-margins}{\renewcommand{\pagemargin}{2.5cm}}
+\DeclareOption{wide-margins}{\renewcommand{\pagemargin}{3.5cm}}
+\ProcessOptions\relax
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[a4paper,top=\pagemargin,bottom=\pagemargin,left=\pagemargin,right=\pagemargin,marginparwidth=\pagemargin]{geometry}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{array}
+\RequirePackage[backend=biber,style=alphabetic,sorting=anyt,maxnames=4,maxalphanames=4]{biblatex}
+\usepackage[hidelinks, bookmarks=true, bookmarksnumbered=true, bookmarksopen=true]{hyperref}
+\RequirePackage{color}
+\RequirePackage{emptypage}
+\RequirePackage{enumitem}
+\RequirePackage{fancyhdr}
+\RequirePackage{graphicx}
+\RequirePackage{halloweenmath}
+\RequirePackage{ifthen}
+\RequirePackage{lmodern}
+\RequirePackage{mathtools}
+\RequirePackage{mleftright}
+\RequirePackage{multirow}
+\RequirePackage{parskip}
+\RequirePackage{pict2e}
+\RequirePackage{setspace}
+\RequirePackage{subfiles}
+\RequirePackage{stmaryrd}
+\RequirePackage{titling}
+\usepackage{xurl}
+
+% Font
+\loadfont
+\renewcommand{\sfdefault}{lmss}
+
+% General Formatting
+\setmathstyle
+\renewcommand{\baselinestretch}{1.3}
+\newcommand{\mycomment}[1]{}
+\let\l\mleft
+\let\r\mright
+\newcolumntype{M}{>{$}c<{$}}
+\allowdisplaybreaks
+
+% List Formatting
+\setlist{left=0pt}
+\setlist[enumerate,1]{label=(\arabic*)}
+\setlist[enumerate,2]{label=(\alph*)}
+\setlist[itemize,2]{label=$\diamond$}
+
+% Book formatting
+\pagestyle{fancy}
+\fancyhead[R]{}
+\fancyhead[L]{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\thepage}
+
+% Title formatting
+\author{\textsc{Jamie Low Jiaqi}}
+\date{}
+\setlength{\droptitle}{-2em}
+
+% Section formatting
+\newcommand{\usubsection}[1]{\subsection*{#1}\addcontentsline{toc}{subsection}{#1}}
+\newcommand{\usection}[1]{\section*{#1}\addcontentsline{toc}{section}{#1}}
+\newcommand{\uchapter}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}}
+
+\newcommand{\RED}[1]{{\bfseries\itshape\color{red}#1}}
+
+% Operators
+\makeatletter
+\newcommand\RedeclareMathOperator{%
+	\@ifstar{\def\rmo@s{m}\rmo@redeclare}{\def\rmo@s{o}\rmo@redeclare}%
+}
+\newcommand\rmo@redeclare[2]{%
+	\begingroup \escapechar\m@ne\xdef\@gtempa{{\string#1}}\endgroup
+	\expandafter\@ifundefined\@gtempa
+	{\@latex@error{\noexpand#1undefined}\@ehc}%
+	\relax
+	\expandafter\rmo@declmathop\rmo@s{#1}{#2}}
+\newcommand\rmo@declmathop[3]{%
+	\DeclareRobustCommand{#2}{\qopname\newmcodes@#1{#3}}%
+}
+\@onlypreamble\RedeclareMathOperator
+\makeatother
+
+\RedeclareMathOperator{\Pr}{\bbP r}
+\RedeclareMathOperator{\Re}{Re}
+\RedeclareMathOperator{\Im}{Im}
+
+\DeclareMathOperator{\Char}{char}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\trace}{tr}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\bs}{\setminus}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Int}{Int}
+\DeclareMathOperator{\modulo}{mod}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Inn}{Inn}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ell}{Ell}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\PGL}{PGL}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\V}{\Vert}
+\DeclareMathOperator{\PPol}{PPol}
+\DeclareMathOperator{\Jac}{Jac}
+\DeclareMathOperator{\degrd}{degrd}
+\DeclareMathOperator{\Ros}{Ros}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\Mat}{Mat}
+\DeclareMathOperator{\RA}{RA}
+\DeclareMathOperator{\col}{col}
+\DeclareMathOperator{\Ver}{Ver}
+\DeclareMathOperator{\Ed}{Ed}
+\renewcommand{\mod}[1]{\ (\operatorname{mod}\,#1)}
+\newcommand{\smallchoose}[2]{\begin{psmallmatrix} #1\\#2\end{psmallmatrix}}
+\renewcommand{\choose}[2]{\begin{pmatrix} #1\\#2\end{pmatrix}}
+\newcommand{\drv}[2][]{\frac{\rm{d}#1}{\rm{d}#2}}
+\newcommand{\pdrv}[2][]{\frac{\partial #1}{\partial #2}}
+
+% Symbols
+\newcommand{\boxsc}[1]{\boxed{\textsc{#1}}}
+\ifdefined \cupdot \else \newcommand{\cupdot}{\mathbin{\mathaccent\cdot\cup}} \fi
+\ifdefined \bigcupdot \else \newcommand{\bigcupdot}{\mathop{\bigcup\hspace{-7.5pt}\cdot\hspace{4.5pt}}} \fi
+\newcommand\dotpr[1][.5]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
+
+\DeclareFontFamily{U}{mathb}{\hyphenchar\font45}
+\DeclareFontShape{U}{mathb}{m}{n}{
+	<-6> mathb5 <6-7> mathb6 <7-8> mathb7
+	<8-9> mathb8 <9-10> mathb9
+	<10-12> mathb10 <12-> mathb12
+}{}
+\DeclareSymbolFont{mathb}{U}{mathb}{m}{n}
+\DeclareMathSymbol{\llcurly}{\mathrel}{mathb}{"CE}
+\DeclareMathSymbol{\ggcurly}{\mathrel}{mathb}{"CF}
+
+\newcommand{\norm}[1][\cdot]{\l\Vert#1\r\Vert}
+\newcommand{\ip}[1][\cdot,\cdot]{\l\langle#1\r\rangle}
+\newcommand{\ket}[1]{\l\vert#1\r\rangle\vphantom{\raisebox{-1.5pt}{$\l\vert#1\r\rangle$}}}
+\newcommand{\bra}[1]{\l\langle#1\r\vert\vphantom{\raisebox{-1.5pt}{$\l\langle#1\r\vert$}}}
+\newcommand{\braket}[2]{\l\langle#1\,\middle\vert\,#2\r\rangle\vphantom{\raisebox{-1.5pt}{$\l\langle#1\middle\vert#2\r\rangle$}}}
+
+\let\llra\longleftrightarrow
+\let\lra\Longrightarrow
+\let\eps\varepsilon
+\newcommand{\qlra}{\quad\lra\quad}
+\newcommand{\qllra}{\quad\llra\quad}
+\newcommand{\qqlra}{\qquad\lra\qquad}
+\newcommand{\qiff}{\quad\iff\quad}
+\newcommand{\qqiff}{\qquad\iff\qquad}
+\newcommand{\qand}{\quad\text{and}\quad}
+\newcommand{\qqand}{\qquad\text{and}\qquad}
+\newcommand{\qif}{\text{if }}
+\newcommand{\qtx}[1]{\quad\text{#1}\quad}
+\newcommand{\mst}{\,\middle|\,}
+\newcommand{\qdd}{\hfill$\bigtriangleup$}
+\newcommand{\comp}{^\mathsf{c}}
+
+\let\oldforall\forall
+\renewcommand{\forall}{\oldforall \, }
+\let\oldexist\exists
+\renewcommand{\exists}{\oldexist \: }
+\newcommand\existu{\oldexist! \: }
+\let\oldnexist\nexists
+\renewcommand{\nexists}{\oldnexist \: }
+
+\newcommand{\overbar}[2][0]{\mkern 1.5mu\overline{\mkern-1.5mu\hspace{#1pt}#2\hspace{#1pt}\mkern-1.5mu}\mkern 1.5mu}
+\renewcommand{\emptyset}{\varnothing}
+
+% Typefaces
+\let\bb\mathbb
+\let\bf\mathbf
+\let\mc\mathcal
+\let\mf\mathfrak
+\let\rm\mathrm
+\let\sf\mathsf
+\let\tt\texttt
+\let\op\operatorname
+
+\newcommand{\bbA}{\bb{A}}
+\newcommand{\bbB}{\bb{B}}
+\newcommand{\bbC}{\bb{C}}
+\newcommand{\bbD}{\bb{D}}
+\newcommand{\bbE}{\bb{E}}
+\newcommand{\bbF}{\bb{F}}
+\newcommand{\bbG}{\bb{G}}
+\newcommand{\bbH}{\bb{H}}
+\newcommand{\bbI}{\bb{I}}
+\newcommand{\bbJ}{\bb{J}}
+\newcommand{\bbK}{\bb{K}}
+\newcommand{\bbL}{\bb{L}}
+\newcommand{\bbM}{\bb{M}}
+\newcommand{\bbN}{\bb{N}}
+\newcommand{\bbO}{\bb{O}}
+\newcommand{\bbP}{\bb{P}}
+\newcommand{\bbQ}{\bb{Q}}
+\newcommand{\bbR}{\bb{R}}
+\newcommand{\bbS}{\bb{S}}
+\newcommand{\bbT}{\bb{T}}
+\newcommand{\bbU}{\bb{U}}
+\newcommand{\bbV}{\bb{V}}
+\newcommand{\bbW}{\bb{W}}
+\newcommand{\bbX}{\bb{X}}
+\newcommand{\bbY}{\bb{Y}}
+\newcommand{\bbZ}{\bb{Z}}
+
+\newcommand{\bfa}{\bf{a}}
+\newcommand{\bfb}{\bf{b}}
+\newcommand{\bfc}{\bf{c}}
+\newcommand{\bfd}{\bf{d}}
+\newcommand{\bfe}{\bf{e}}
+\newcommand{\bff}{\bf{f}}
+\newcommand{\bfg}{\bf{g}}
+\newcommand{\bfh}{\bf{h}}
+\newcommand{\bfi}{\bf{i}}
+\newcommand{\bfj}{\bf{j}}
+\newcommand{\bfk}{\bf{k}}
+\newcommand{\bfl}{\bf{l}}
+\newcommand{\bfm}{\bf{m}}
+\newcommand{\bfn}{\bf{n}}
+\newcommand{\bfo}{\bf{o}}
+\newcommand{\bfp}{\bf{p}}
+\newcommand{\bfq}{\bf{q}}
+\newcommand{\bfr}{\bf{r}}
+\newcommand{\bfs}{\bf{s}}
+\newcommand{\bft}{\bf{t}}
+\newcommand{\bfu}{\bf{u}}
+\newcommand{\bfv}{\bf{v}}
+\newcommand{\bfw}{\bf{w}}
+\newcommand{\bfx}{\bf{x}}
+\newcommand{\bfy}{\bf{y}}
+\newcommand{\bfz}{\bf{z}}
+\newcommand{\bfA}{\bf{A}}
+\newcommand{\bfB}{\bf{B}}
+\newcommand{\bfC}{\bf{C}}
+\newcommand{\bfD}{\bf{D}}
+\newcommand{\bfE}{\bf{E}}
+\newcommand{\bfF}{\bf{F}}
+\newcommand{\bfG}{\bf{G}}
+\newcommand{\bfH}{\bf{H}}
+\newcommand{\bfI}{\bf{I}}
+\newcommand{\bfJ}{\bf{J}}
+\newcommand{\bfK}{\bf{K}}
+\newcommand{\bfL}{\bf{L}}
+\newcommand{\bfM}{\bf{M}}
+\newcommand{\bfN}{\bf{N}}
+\newcommand{\bfO}{\bf{O}}
+\newcommand{\bfP}{\bf{P}}
+\newcommand{\bfQ}{\bf{Q}}
+\newcommand{\bfR}{\bf{R}}
+\newcommand{\bfS}{\bf{S}}
+\newcommand{\bfT}{\bf{T}}
+\newcommand{\bfU}{\bf{U}}
+\newcommand{\bfV}{\bf{V}}
+\newcommand{\bfW}{\bf{W}}
+\newcommand{\bfX}{\bf{X}}
+\newcommand{\bfY}{\bf{Y}}
+\newcommand{\bfZ}{\bf{Z}}
+
+\newcommand{\mca}{\mc{a}}
+\newcommand{\mcb}{\mc{b}}
+\newcommand{\mcc}{\mc{c}}
+\newcommand{\mcd}{\mc{d}}
+\newcommand{\mce}{\mc{e}}
+\newcommand{\mcf}{\mc{f}}
+\newcommand{\mcg}{\mc{g}}
+\newcommand{\mch}{\mc{h}}
+\newcommand{\mci}{\mc{i}}
+\newcommand{\mcj}{\mc{j}}
+\newcommand{\mck}{\mc{k}}
+\newcommand{\mcl}{\mc{l}}
+\newcommand{\mcm}{\mc{m}}
+\newcommand{\mcn}{\mc{n}}
+\newcommand{\mco}{\mc{o}}
+\newcommand{\mcp}{\mc{p}}
+\newcommand{\mcq}{\mc{q}}
+\newcommand{\mcr}{\mc{r}}
+\newcommand{\mcs}{\mc{s}}
+\newcommand{\mct}{\mc{t}}
+\newcommand{\mcu}{\mc{u}}
+\newcommand{\mcv}{\mc{v}}
+\newcommand{\mcw}{\mc{w}}
+\newcommand{\mcx}{\mc{x}}
+\newcommand{\mcy}{\mc{y}}
+\newcommand{\mcz}{\mc{z}}
+\newcommand{\mcA}{\mc{A}}
+\newcommand{\mcB}{\mc{B}}
+\newcommand{\mcC}{\mc{C}}
+\newcommand{\mcD}{\mc{D}}
+\newcommand{\mcE}{\mc{E}}
+\newcommand{\mcF}{\mc{F}}
+\newcommand{\mcG}{\mc{G}}
+\newcommand{\mcH}{\mc{H}}
+\newcommand{\mcI}{\mc{I}}
+\newcommand{\mcJ}{\mc{J}}
+\newcommand{\mcK}{\mc{K}}
+\newcommand{\mcL}{\mc{L}}
+\newcommand{\mcM}{\mc{M}}
+\newcommand{\mcN}{\mc{N}}
+\newcommand{\mcO}{\mc{O}}
+\newcommand{\mcP}{\mc{P}}
+\newcommand{\mcQ}{\mc{Q}}
+\newcommand{\mcR}{\mc{R}}
+\newcommand{\mcS}{\mc{S}}
+\newcommand{\mcT}{\mc{T}}
+\newcommand{\mcU}{\mc{U}}
+\newcommand{\mcV}{\mc{V}}
+\newcommand{\mcW}{\mc{W}}
+\newcommand{\mcX}{\mc{X}}
+\newcommand{\mcY}{\mc{Y}}
+\newcommand{\mcZ}{\mc{Z}}
+
+\newcommand{\mfa}{\mf{a}}
+\newcommand{\mfb}{\mf{b}}
+\newcommand{\mfc}{\mf{c}}
+\newcommand{\mfd}{\mf{d}}
+\newcommand{\mfe}{\mf{e}}
+\newcommand{\mff}{\mf{f}}
+\newcommand{\mfg}{\mf{g}}
+\newcommand{\mfh}{\mf{h}}
+\newcommand{\mfi}{\mf{i}}
+\newcommand{\mfj}{\mf{j}}
+\newcommand{\mfk}{\mf{k}}
+\newcommand{\mfl}{\mf{l}}
+\newcommand{\mfm}{\mf{m}}
+\newcommand{\mfn}{\mf{n}}
+\newcommand{\mfo}{\mf{o}}
+\newcommand{\mfp}{\mf{p}}
+\newcommand{\mfq}{\mf{q}}
+\newcommand{\mfr}{\mf{r}}
+\newcommand{\mfs}{\mf{s}}
+\newcommand{\mft}{\mf{t}}
+\newcommand{\mfu}{\mf{u}}
+\newcommand{\mfv}{\mf{v}}
+\newcommand{\mfw}{\mf{w}}
+\newcommand{\mfx}{\mf{x}}
+\newcommand{\mfy}{\mf{y}}
+\newcommand{\mfz}{\mf{z}}
+\newcommand{\mfA}{\mf{A}}
+\newcommand{\mfB}{\mf{B}}
+\newcommand{\mfC}{\mf{C}}
+\newcommand{\mfD}{\mf{D}}
+\newcommand{\mfE}{\mf{E}}
+\newcommand{\mfF}{\mf{F}}
+\newcommand{\mfG}{\mf{G}}
+\newcommand{\mfH}{\mf{H}}
+\newcommand{\mfI}{\mf{I}}
+\newcommand{\mfJ}{\mf{J}}
+\newcommand{\mfK}{\mf{K}}
+\newcommand{\mfL}{\mf{L}}
+\newcommand{\mfM}{\mf{M}}
+\newcommand{\mfN}{\mf{N}}
+\newcommand{\mfO}{\mf{O}}
+\newcommand{\mfP}{\mf{P}}
+\newcommand{\mfQ}{\mf{Q}}
+\newcommand{\mfR}{\mf{R}}
+\newcommand{\mfS}{\mf{S}}
+\newcommand{\mfT}{\mf{T}}
+\newcommand{\mfU}{\mf{U}}
+\newcommand{\mfV}{\mf{V}}
+\newcommand{\mfW}{\mf{W}}
+\newcommand{\mfX}{\mf{X}}
+\newcommand{\mfY}{\mf{Y}}
+\newcommand{\mfZ}{\mf{Z}}
+
+\newcommand{\rma}{\rm{a}}
+\newcommand{\rmb}{\rm{b}}
+\newcommand{\rmc}{\rm{c}}
+\newcommand{\rmd}{\rm{d}}
+\newcommand{\rme}{\rm{e}}
+\newcommand{\rmf}{\rm{f}}
+\newcommand{\rmg}{\rm{g}}
+\newcommand{\rmh}{\rm{h}}
+\newcommand{\rmi}{\rm{i}}
+\newcommand{\rmj}{\rm{j}}
+\newcommand{\rmk}{\rm{k}}
+\newcommand{\rml}{\rm{l}}
+\newcommand{\rmm}{\rm{m}}
+\newcommand{\rmn}{\rm{n}}
+\newcommand{\rmo}{\rm{o}}
+\newcommand{\rmp}{\rm{p}}
+\newcommand{\rmq}{\rm{q}}
+\newcommand{\rmr}{\rm{r}}
+\newcommand{\rms}{\rm{s}}
+\newcommand{\rmt}{\rm{t}}
+\newcommand{\rmu}{\rm{u}}
+\newcommand{\rmv}{\rm{v}}
+\newcommand{\rmw}{\rm{w}}
+\newcommand{\rmx}{\rm{x}}
+\newcommand{\rmy}{\rm{y}}
+\newcommand{\rmz}{\rm{z}}
+\newcommand{\rmA}{\rm{A}}
+\newcommand{\rmB}{\rm{B}}
+\newcommand{\rmC}{\rm{C}}
+\newcommand{\rmD}{\rm{D}}
+\newcommand{\rmE}{\rm{E}}
+\newcommand{\rmF}{\rm{F}}
+\newcommand{\rmG}{\rm{G}}
+\newcommand{\rmH}{\rm{H}}
+\newcommand{\rmI}{\rm{I}}
+\newcommand{\rmJ}{\rm{J}}
+\newcommand{\rmK}{\rm{K}}
+\newcommand{\rmL}{\rm{L}}
+\newcommand{\rmM}{\rm{M}}
+\newcommand{\rmN}{\rm{N}}
+\newcommand{\rmO}{\rm{O}}
+\newcommand{\rmP}{\rm{P}}
+\newcommand{\rmQ}{\rm{Q}}
+\newcommand{\rmR}{\rm{R}}
+\newcommand{\rmS}{\rm{S}}
+\newcommand{\rmT}{\rm{T}}
+\newcommand{\rmU}{\rm{U}}
+\newcommand{\rmV}{\rm{V}}
+\newcommand{\rmW}{\rm{W}}
+\newcommand{\rmX}{\rm{X}}
+\newcommand{\rmY}{\rm{Y}}
+\newcommand{\rmZ}{\rm{Z}}
+
+\newcommand{\da}{\,\rmd a}
+\newcommand{\db}{\,\rmd b}
+\newcommand{\dc}{\,\rmd c}
+\newcommand{\dd}{\,\rmd d}
+\newcommand{\de}{\,\rmd e}
+\newcommand{\df}{\,\rmd f}
+\newcommand{\dg}{\,\rmd g}
+\renewcommand{\dh}{\,\rmd h}
+\newcommand{\di}{\,\rmd i}
+\renewcommand{\dj}{\,\rmd j}
+\newcommand{\dk}{\,\rmd k}
+\newcommand{\dl}{\,\rmd l}
+\newcommand{\dm}{\,\rmd m}
+\newcommand{\dn}{\,\rmd n}
+\renewcommand{\do}{\,\rmd o}
+\newcommand{\dq}{\,\rmd q}
+\newcommand{\dr}{\,\rmd r}
+\newcommand{\ds}{\,\rmd s}
+\newcommand{\dt}{\,\rmd t}
+\newcommand{\du}{\,\rmd u}
+\newcommand{\dv}{\,\rmd v}
+\newcommand{\dw}{\,\rmd w}
+\newcommand{\dx}[1][x]{\,\rmd#1}
+\newcommand{\dy}{\,\rmd y}
+\newcommand{\dz}{\,\rmd z}
+\newcommand{\dA}{\,\rmd A}
+\newcommand{\dB}{\,\rmd B}
+\newcommand{\dC}{\,\rmd C}
+\newcommand{\dD}{\,\rmd D}
+\newcommand{\dE}{\,\rmd E}
+\newcommand{\dF}{\,\rmd F}
+\newcommand{\dG}{\,\rmd G}
+\newcommand{\dH}{\,\rmd H}
+\newcommand{\dI}{\,\rmd I}
+\newcommand{\dJ}{\,\rmd J}
+\newcommand{\dK}{\,\rmd K}
+\newcommand{\dL}{\,\rmd L}
+\newcommand{\dM}{\,\rmd M}
+\newcommand{\dN}{\,\rmd N}
+\newcommand{\dO}{\,\rmd O}
+\newcommand{\dP}{\,\rmd P}
+\newcommand{\dQ}{\,\rmd Q}
+\newcommand{\dR}{\,\rmd R}
+\newcommand{\dS}{\,\rmd S}
+\newcommand{\dT}{\,\rmd T}
+\newcommand{\dU}{\,\rmd U}
+\newcommand{\dV}{\,\rmd V}
+\newcommand{\dW}{\,\rmd W}
+\newcommand{\dX}{\,\rmd X}
+\newcommand{\dY}{\,\rmd Y}
+\newcommand{\dZ}{\,\rmd Z}
+\newcommand{\dth}{\,\rmd\theta}
+
+\DeclareMathOperator{\opa}{a}
+\DeclareMathOperator{\opb}{b}
+\DeclareMathOperator{\opc}{c}
+\DeclareMathOperator{\opd}{d}
+\DeclareMathOperator{\ope}{e}
+\DeclareMathOperator{\opf}{f}
+\DeclareMathOperator{\opg}{g}
+\DeclareMathOperator{\oph}{h}
+\DeclareMathOperator{\opi}{i}
+\DeclareMathOperator{\opj}{j}
+\DeclareMathOperator{\opk}{k}
+\DeclareMathOperator{\opl}{l}
+\DeclareMathOperator{\opm}{m}
+\DeclareMathOperator{\opn}{n}
+\DeclareMathOperator{\opo}{o}
+\DeclareMathOperator{\opp}{p}
+\DeclareMathOperator{\opq}{q}
+\DeclareMathOperator{\opr}{r}
+\DeclareMathOperator{\ops}{s}
+\DeclareMathOperator{\opt}{t}
+\DeclareMathOperator{\opu}{u}
+\DeclareMathOperator{\opv}{v}
+\DeclareMathOperator{\opw}{w}
+\DeclareMathOperator{\opx}{x}
+\DeclareMathOperator{\opy}{y}
+\DeclareMathOperator{\opz}{z}
+\DeclareMathOperator{\opA}{A}
+\DeclareMathOperator{\opB}{B}
+\DeclareMathOperator{\opC}{C}
+\DeclareMathOperator{\opD}{D}
+\DeclareMathOperator{\opE}{E}
+\DeclareMathOperator{\opF}{F}
+\DeclareMathOperator{\opG}{G}
+\DeclareMathOperator{\opH}{H}
+\DeclareMathOperator{\opI}{I}
+\DeclareMathOperator{\opJ}{J}
+\DeclareMathOperator{\opK}{K}
+\DeclareMathOperator{\opL}{L}
+\DeclareMathOperator{\opM}{M}
+\DeclareMathOperator{\opN}{N}
+\DeclareMathOperator{\opO}{O}
+\DeclareMathOperator{\opP}{P}
+\DeclareMathOperator{\opQ}{Q}
+\DeclareMathOperator{\opR}{R}
+\DeclareMathOperator{\opS}{S}
+\DeclareMathOperator{\opT}{T}
+\DeclareMathOperator{\opU}{U}
+\DeclareMathOperator{\opV}{V}
+\DeclareMathOperator{\opW}{W}
+\DeclareMathOperator{\opX}{X}
+\DeclareMathOperator{\opY}{Y}
+\DeclareMathOperator{\opZ}{Z}
+
+\newcommand{\sfa}{\sf{a}}
+\newcommand{\sfb}{\sf{b}}
+\newcommand{\sfc}{\sf{c}}
+\newcommand{\sfd}{\sf{d}}
+\newcommand{\sfe}{\sf{e}}
+\newcommand{\sff}{\sf{f}}
+\newcommand{\sfg}{\sf{g}}
+\newcommand{\sfh}{\sf{h}}
+\newcommand{\sfi}{\sf{i}}
+\newcommand{\sfj}{\sf{j}}
+\newcommand{\sfk}{\sf{k}}
+\newcommand{\sfl}{\sf{l}}
+\newcommand{\sfm}{\sf{m}}
+\newcommand{\sfn}{\sf{n}}
+\newcommand{\sfo}{\sf{o}}
+\newcommand{\sfp}{\sf{p}}
+\newcommand{\sfq}{\sf{q}}
+\newcommand{\sfr}{\sf{r}}
+\newcommand{\sfs}{\sf{s}}
+\newcommand{\sft}{\sf{t}}
+\newcommand{\sfu}{\sf{u}}
+\newcommand{\sfv}{\sf{v}}
+\newcommand{\sfw}{\sf{w}}
+\newcommand{\sfx}{\sf{x}}
+\newcommand{\sfy}{\sf{y}}
+\newcommand{\sfz}{\sf{z}}
+\newcommand{\sfA}{\sf{A}}
+\newcommand{\sfB}{\sf{B}}
+\newcommand{\sfC}{\sf{C}}
+\newcommand{\sfD}{\sf{D}}
+\newcommand{\sfE}{\sf{E}}
+\newcommand{\sfF}{\sf{F}}
+\newcommand{\sfG}{\sf{G}}
+\newcommand{\sfH}{\sf{H}}
+\newcommand{\sfI}{\sf{I}}
+\newcommand{\sfJ}{\sf{J}}
+\newcommand{\sfK}{\sf{K}}
+\newcommand{\sfL}{\sf{L}}
+\newcommand{\sfM}{\sf{M}}
+\newcommand{\sfN}{\sf{N}}
+\newcommand{\sfO}{\sf{O}}
+\newcommand{\sfP}{\sf{P}}
+\newcommand{\sfQ}{\sf{Q}}
+\newcommand{\sfR}{\sf{R}}
+\newcommand{\sfS}{\sf{S}}
+\newcommand{\sfT}{\sf{T}}
+\newcommand{\sfU}{\sf{U}}
+\newcommand{\sfV}{\sf{V}}
+\newcommand{\sfW}{\sf{W}}
+\newcommand{\sfX}{\sf{X}}
+\newcommand{\sfY}{\sf{Y}}
+\newcommand{\sfZ}{\sf{Z}}
+
+\newcommand{\tta}{\tt{a}}
+\newcommand{\ttb}{\tt{b}}
+\newcommand{\ttc}{\tt{c}}
+\newcommand{\ttd}{\tt{d}}
+\newcommand{\tte}{\tt{e}}
+\newcommand{\ttf}{\tt{f}}
+\newcommand{\ttg}{\tt{g}}
+\newcommand{\tth}{\tt{h}}
+\newcommand{\tti}{\tt{i}}
+\newcommand{\ttj}{\tt{j}}
+\newcommand{\ttk}{\tt{k}}
+\newcommand{\ttl}{\tt{l}}
+\newcommand{\ttm}{\tt{m}}
+\newcommand{\ttn}{\tt{n}}
+\newcommand{\tto}{\tt{o}}
+\newcommand{\ttp}{\tt{p}}
+\newcommand{\ttq}{\tt{q}}
+\newcommand{\ttr}{\tt{r}}
+\newcommand{\tts}{\tt{s}}
+\newcommand{\ttt}{\tt{t}}
+\newcommand{\ttu}{\tt{u}}
+\newcommand{\ttv}{\tt{v}}
+\newcommand{\ttw}{\tt{w}}
+\newcommand{\ttx}{\tt{x}}
+\newcommand{\tty}{\tt{y}}
+\newcommand{\ttz}{\tt{z}}
+\newcommand{\ttA}{\tt{A}}
+\newcommand{\ttB}{\tt{B}}
+\newcommand{\ttC}{\tt{C}}
+\newcommand{\ttD}{\tt{D}}
+\newcommand{\ttE}{\tt{E}}
+\newcommand{\ttF}{\tt{F}}
+\newcommand{\ttG}{\tt{G}}
+\newcommand{\ttH}{\tt{H}}
+\newcommand{\ttI}{\tt{I}}
+\newcommand{\ttJ}{\tt{J}}
+\newcommand{\ttK}{\tt{K}}
+\newcommand{\ttL}{\tt{L}}
+\newcommand{\ttM}{\tt{M}}
+\newcommand{\ttN}{\tt{N}}
+\newcommand{\ttO}{\tt{O}}
+\newcommand{\ttP}{\tt{P}}
+\newcommand{\ttQ}{\tt{Q}}
+\newcommand{\ttR}{\tt{R}}
+\newcommand{\ttS}{\tt{S}}
+\newcommand{\ttT}{\tt{T}}
+\newcommand{\ttU}{\tt{U}}
+\newcommand{\ttV}{\tt{V}}
+\newcommand{\ttW}{\tt{W}}
+\newcommand{\ttX}{\tt{X}}
+\newcommand{\ttY}{\tt{Y}}
+\newcommand{\ttZ}{\tt{Z}}
+
+% Environments
+
+\makeatletter
+\newcounter{claim} \counterwithin{claim}{\claimsunder}
+\newcounter{exercise} \counterwithin{exercise}{\claimsunder}
+
+\newcommand{\@claim}[2][]{\refstepcounter{claim}\par\bigskip\noindent\textbf{#2 \theclaim.} \quad \ifthenelse{\equal{#1}{}}{}{(#1)\par}}
+\newcommand{\@@claim}[2][]{\par\bigskip\noindent\textbf{#2.} \quad \ifthenelse{\equal{#1}{}}{}{(#1)\par}}
+\newcommand{\claim}{\@ifstar{\@@claim}{\@claim}}
+
+\newcommand{\theorem}{\@ifstar{\@@theorem}{\@theorem}}
+\newcommand{\@theorem}[1][] { \claim[#1]{Theorem} }
+\newcommand{\@@theorem}[1][] { \claim*[#1]{Theorem} }
+
+\newcommand{\proposition}{\@ifstar{\@@proposition}{\@proposition}}
+\newcommand{\@proposition}[1][] { \claim[#1]{Proposition} }
+\newcommand{\@@proposition}[1][] { \claim*[#1]{Proposition} }
+
+\newcommand{\lemma}{\@ifstar{\@@lemma}{\@lemma}}
+\newcommand{\@lemma}[1][] { \claim[#1]{Lemma} }
+\newcommand{\@@lemma}[1][] { \claim*[#1]{Lemma} }
+
+\newcommand{\corollary}{\@ifstar{\@@corollary}{\@corollary}}
+\newcommand{\@corollary}[1][] { \claim[#1]{Corollary} }
+\newcommand{\@@corollary}[1][] { \claim*[#1]{Corollary} }
+
+\newcommand{\definition}{\@ifstar{\@@definition}{\@definition}}
+\newcommand{\@definition}[1][] { \claim[#1]{Definition} }
+\newcommand{\@@definition}[1][] { \claim*[#1]{Definition} }
+
+\newcommand{\example}{\@ifstar{\@@example}{\@example}}
+\newcommand{\@example}[1][] { \claim[#1]{Example} }
+\newcommand{\@@example}[1][] { \claim*[#1]{Example} }
+
+\newcommand{\exercise}{\refstepcounter{exercise}\par\bigskip
+	\noindent\textbf{Exercise \theexercise.} \quad}
+
+\renewcommand{\proof}[1][Proof] {\par\smallskip\noindent\textit{#1.}\quad}
+\newcommand{\remark}{\proof[Remark]}
+\newcommand{\solution}{\proof[Solution]}
+
+\makeatother
