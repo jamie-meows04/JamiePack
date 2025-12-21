@@ -9,6 +9,8 @@
 \DeclareOption{times}{\renewcommand{\loadfont}{\RequirePackage{newtxtext,newtxmath}}}
 \DeclareOption{stix}{\renewcommand{\loadfont}{\RequirePackage{stix2}}}
 \DeclareOption{displaymath}{\renewcommand{\setmathstyle}{\everymath{\displaystyle}}}
+\DeclareOption{claims-under-none}{\renewcommand{\claimsunder}{\undefined}}
+\DeclareOption{claims-under-section}{\renewcommand{\claimsunder}{section}}
 \DeclareOption{claims-under-subsection}{\renewcommand{\claimsunder}{subsection}}
 \DeclareOption{claims-under-subsubsection}{\renewcommand{\claimsunder}{subsubsection}}
 \DeclareOption{narrow-margins}{\renewcommand{\pagemargin}{1.5cm}}
@@ -657,8 +659,14 @@
 % Environments
 
 \makeatletter
-\newcounter{claim} \counterwithin{claim}{\claimsunder}
-\newcounter{exercise} \counterwithin{exercise}{\claimsunder}
+\newcounter{claim}
+\newcounter{exercise}
+
+\ifx\claimsunder\empty\else
+	\counterwithin{claim}{\claimsunder}
+	\counterwithin{exercise}{\claimsunder}
+	\counterwithin{equation}{\claimsunder}
+\fi
 
 \newcommand{\@claim}[2][]{\par\bigskip\noindent\refstepcounter{claim}\textbf{#2 \theclaim.} \quad \ifthenelse{\equal{#1}{}}{}{(#1)\par}}
 \newcommand{\@@claim}[2][]{\par\bigskip\noindent\textbf{#2.} \quad \ifthenelse{\equal{#1}{}}{}{(#1)\par}}
