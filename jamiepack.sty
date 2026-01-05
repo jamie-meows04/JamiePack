@@ -716,4 +716,7 @@
 \newcommand{\figcaption}{\par\smallskip\textbf{Figure \thestatement.}\ }
 \newcommand{\tabcaption}{\par\smallskip\textbf{Table \thestatement.}\ }
 
+\let\oldprintbibliography\printbibliography
+\renewcommand{\printbibliography}[1][]{\addcontentsline{toc}{section}{References} \oldprintbibliography[#1]}
+
 \makeatother
