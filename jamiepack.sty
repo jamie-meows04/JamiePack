@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{jamiepack}[2025/12/18]
+\ProvidesPackage{jamiepack}[2026/01/05]
 
 \newcommand{\loadfont}{\RequirePackage{newtxtext,newtxmath}}
 \newcommand{\setmathstyle}{}
@@ -8,7 +8,7 @@
 \DeclareOption{lmodern}{\renewcommand{\loadfont}{\RequirePackage{lmodern}}}
 \DeclareOption{times}{\renewcommand{\loadfont}{\RequirePackage{newtxtext,newtxmath}}}
 \DeclareOption{stix}{\renewcommand{\loadfont}{\RequirePackage{stix2}}}
-\DeclareOption{lmss}{\renewcommand{\loadfont}{\RequirePackage{lmodern} \RequirePackage{sfmath} \fontfamily{lmss}\selectfont}}
+\DeclareOption{cmb}{\renewcommand{\loadfont}{\RequirePackage{cmbright}}}
 \DeclareOption{displaymath}{\renewcommand{\setmathstyle}{\everymath{\displaystyle}}}
 \DeclareOption{claims-under-none}{\renewcommand{\claimsunder}{\undefined}}
 \DeclareOption{claims-under-section}{\renewcommand{\claimsunder}{section}}
@@ -30,6 +30,7 @@
 \RequirePackage{emptypage}
 \RequirePackage{enumitem}
 \RequirePackage{fancyhdr}
+\RequirePackage[T1]{fontenc}
 \RequirePackage{graphicx}
 \RequirePackage{halloweenmath}
 \RequirePackage[hidelinks, bookmarks=true, bookmarksnumbered=true, bookmarksopen=true]{hyperref}
@@ -665,8 +666,8 @@
 \newcounter{exercise}
 
 \ifx\claimsunder\empty\else
-	\counterwithin{statement}{\claimsunder}
-	\counterwithin{exercise}{\claimsunder}
+\counterwithin{statement}{\claimsunder}
+\counterwithin{exercise}{\claimsunder}
 \fi
 
 \newcommand{\@claim}[2][]{\par\bigskip\noindent\refstepcounter{statement}\textbf{#2 \thestatement.} \quad \ifthenelse{\equal{#1}{}}{}{(#1)\par}}
