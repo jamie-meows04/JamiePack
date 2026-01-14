@@ -47,6 +47,8 @@
 \col
 \Ver
 \Ed
+\Nil
+\Spec
 \mod
 \smallchoose
 \choose
